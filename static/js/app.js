@@ -5,9 +5,8 @@ function debug(strMsg, thing){
 }
 
 // from data.js. Let's use LETs instead of VARs.
-let arrData = data;
 let intDebugCount = 1;
-debug("declared variables", arrData);
+debug("declared variables");
 
 // YOUR CODE HERE!
 // declare variable for the "Filter Table" button
@@ -21,18 +20,35 @@ btnFilter.on("click", function() {
   d3.event.preventDefault();
   
   // Select the input element and get the raw HTML node
-  let inpDT = d3.select("#datetime");
-  debug("captured Enter a Date inputbox");
+  let inpDatetime = d3.select("#datetime");
+  let inpCity     = d3.select("#city");
+  let inpState    = d3.select("#state");
+  let inpCountry  = d3.select("#country");
+  let inpShape    = d3.select("#shape");
+  debug("captured inputboxes");
 
   // Get the value property of the input element
-  let datIn = Date.parse(inpDT.property("value"));
-  debug("captured entered date", datIn);
+  let dat        = Date.parse(inpDatetime.property("value"));
+  let strCity    = inpCity.property("value").toLowerCase();
+  let strState   = inpState.property("value").toLowerCase();
+  let strCountry = inpCountry.property("value").toLowerCase();
+  let strShape   = inpShape.property("value").toLowerCase();
+  debug("captured criteria");
 
-  // Use the form input to filter the data by blood type
-  let arrMatch = arrData.filter(itm=>Date.parse(itm.datetime)===datIn);
+  // Use the form input to filter by form data
+  let arrMatch = data;
+  if(dat > 0)           {arrMatch = arrMatch.filter(itm=>Date.parse(itm.datetime)===dat);}
+  if(strCity !== "")    {arrMatch = arrMatch.filter(itm=>itm.city==strCity);}
+  if(strState !== "")   {arrMatch = arrMatch.filter(itm=>itm.state==strState);}
+  if(strCountry !== "") {arrMatch = arrMatch.filter(itm=>itm.country==strCountry);}
+  if(strShape !== "")   {arrMatch = arrMatch.filter(itm=>itm.shape==strShape);}
   debug("created filtered array", arrMatch);
+  let tbodCurr = document.getElementById("ufo-table-body");
+  let tbodBlank = document.createElement("tbody");
+  tbodCurr.parentNode.replaceChild(tbodBlank, tbodCurr);
+  tbodBlank.id = "ufo-table-body";
+  debug("cleared tbod contents", tbodBlank);
   let tbod = d3.select("#ufo-table").select("tbody");
-  debug("captured table body tag", tbod);
   arrMatch.map(itm=>
   {
 	  let tr = tbod.append("tr");
@@ -43,12 +59,6 @@ btnFilter.on("click", function() {
 	  tr.append("td").text(itm.shape);
 	  tr.append("td").text(itm.durationMinutes);
 	  tr.append("td").text(itm.comments);
-      debug(`added table row ${itm.}`, tr);
+      debug(`added table row ${itm}`, tr);
   });
-
-  // Next, use math.js to calculate the mean, median, mode, var, and std of the ages
-//  let arrAge = arrMatch.map(itm=>parseInt(itm.age));
-//  d3.select(".summary").append("li").text(`Average Age: ${parseInt(math.mean(arrAge))}`);
-
-  // Finally, add the summary stats to the `ul` tag
 });
