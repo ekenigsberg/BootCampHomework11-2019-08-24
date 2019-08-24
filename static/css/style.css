@@ -122,19 +122,21 @@ select {
   padding: 20px;
   margin: 0;
   background: black;
-  background-image: url("../images/nasa.jpg");
+  background-image: url("../images/xeno1.png");
   background-attachment: fixed;
   background-position: bottom center;
   background-size: cover;
 }
 
 .hero h1 {
+  color: white;
   margin-top: 0px;
   font-size: 0.1rem;
   animation: title 1.2s forwards linear;
 }
 
 .hero p {
+  color: white;
   font-size: 2rem;
   opacity: 0;
   animation: subtitle 1.2s forwards linear;
